@@ -7,6 +7,9 @@
   "copyright": "Copyright 2017 creativeLabs Łukasz Holeczek",
   "license": "MIT",
   "private": true,
+  "optionalDependencies": {
+    "fsevents": "*"
+  },
   "devDependencies": {
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
