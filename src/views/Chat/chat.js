@@ -14,55 +14,52 @@ import {
   InputGroupButton
 } from 'reactstrap';
 
-class Cards extends Component {
-  render() {
-    return (
-      <div className="animated fadeIn">
-        <Row>
-          <Col xs="12" md="6">
-            <Card>
-              <CardHeader>
-                <strong>Chat</strong> Input
-              </CardHeader>
-              <CardBody>
-                <ul id="messages">
-                  <li>Fake message</li>
-                </ul>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="12" md="6">
-            <Card>
-              <CardHeader>
-                <strong>Chat</strong> Input
-              </CardHeader>
-              <CardBody>
-                <Form action="" method="post" className="form-horizontal">
-                  <FormGroup row>
-                    <Col md="12">
-                      <InputGroup>
-                        <Input type="email" id="input2-group2" name="input2-group2" placeholder="Email"/>
-                        <InputGroupButton>
-                          <Button color="primary">Submit</Button>
-                        </InputGroupButton>
-                      </InputGroup>
-                    </Col>
-                  </FormGroup>
-                </Form>
-              </CardBody>
-              <CardFooter>
-                <Button type="submit" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>{' '}
-                <Button type="reset" color="danger"><i className="fa fa-ban"></i> Reset</Button>{' '}
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-      </div>
+import socketIOClient from "socket.io-client";
 
+class Chat extends Component {
+  constructor() {
+    super();
+    this.state = {
+      endpoint: "http://127.0.0.1:4001",
+
+      color: 'white'
+
+    };
+  }
+
+  // sending sockets
+  send() {
+    const socket = socketIOClient(this.state.endpoint);
+    socket.emit('change color', this.state.color) // change 'red' to this.state.color
+  }
+
+  ///
+
+  // adding the function
+  setColor(color) {
+    this.setState({ color })
+  }
+
+  ///
+
+  render() {
+    // testing for socket connections
+
+    const socket = socketIOClient(this.state.endpoint);
+    socket.on('change color', (col) => {
+      document.body.style.backgroundColor = col
+    })
+
+    return (
+      <div style={{ textAlign: "center" }}>
+        <button onClick={() => this.send() }>Change Color</button>
+
+        <button id="blue" onClick={() => this.setColor('blue')}>Blue</button>
+        <button id="red" onClick={() => this.setColor('red')}>Red</button>
+
+      </div>
     )
   }
 }
 
-export default Cards;
+export default Chat;

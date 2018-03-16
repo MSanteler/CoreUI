@@ -23,7 +23,7 @@ module.exports = (env = {}) => {
       filename: '[name].bundle.js'
     },
     // watch: true,
-    devtool: env.prod ? 'source-map' : 'cheap-module-eval-source-map',
+    devtool: env.prod ? 'cheap-module-source-map' : 'cheap-module-eval-source-map',
     devServer: {
       contentBase: BUILD_DIR,
       //   port: 9001,
