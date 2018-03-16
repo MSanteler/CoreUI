@@ -9,6 +9,7 @@ import Footer from '../../components/Footer/';
 import Dashboard from '../../views/Dashboard/';
 import Charts from '../../views/Charts/';
 import APIData from '../../views/APIData/';
+import Chat from '../../views/Chat/';
 import Widgets from '../../views/Widgets/';
 
 // Components
@@ -50,6 +51,7 @@ class Full extends Component {
                 <Route path="/widgets" name="Widgets" component={Widgets}/>
                 <Route path="/charts" name="Charts" component={Charts}/>
                 <Route path="/api_data" name="APIData" component={APIData}/>
+                <Route path="/chat" name="Chat" component={Chat}/>
                 <Redirect from="/" to="/dashboard"/>
               </Switch>
             </Container>
