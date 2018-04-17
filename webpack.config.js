@@ -29,7 +29,7 @@ module.exports = (env = {}) => {
       //   port: 9001,
       compress: true,
       hot: true,
-      open: true
+      open: false
     },
     module: {
       rules: [

@@ -52,7 +52,7 @@ const App = ({ data, isLoading, error }) => {
       <CardColumns className="cols-2">
         <Card>
           <CardHeader>
-            Line Chart
+            Line Chart Hello John!
             <div className="card-actions">
             </div>
           </CardHeader>
