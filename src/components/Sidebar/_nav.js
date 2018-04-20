@@ -147,11 +147,6 @@ export default {
       icon: 'icon-star'
     },
     {
-      name: 'Chat',
-      url: '/chat',
-      icon: 'icon-star'
-    },
-    {
       name: 'Download CoreUI',
       url: 'http://coreui.io/react/',
       icon: 'icon-cloud-download',
