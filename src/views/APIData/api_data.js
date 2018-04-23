@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {CardColumns, Card, CardHeader, CardBody} from 'reactstrap';
+import {Button, CardColumns, Card, CardHeader, CardBody} from 'reactstrap';
 
-const API = 'https://hn.algolia.com/api/v1/search?query=';
-const DEFAULT_QUERY = 'redux';
+const API = 'http://localhost:3000/';
+const DEFAULT_QUERY = 'endpoint';
 
 const withFetching = (url) => (Comp) =>
   class WithFetching extends Component {
@@ -14,55 +14,77 @@ const withFetching = (url) => (Comp) =>
         isLoading: false,
         error: null,
       };
+
+      this.goFetch = this.goFetch.bind(this);
+    }
+
+    goFetch() {
+      this.setState({isLoading: true}, function () {
+        console.log("fetching...");
+        fetch(url)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('Something went wrong ...');
+            }
+          })
+          .then(data => this.setState({ data, isLoading: false, error: null }))
+          .catch(error => this.setState({ error, isLoading: false }));
+      });
     }
 
     componentDidMount() {
-      this.setState({ isLoading: true });
-
-      fetch(url)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong ...');
-          }
-        })
-        .then(data => this.setState({ data, isLoading: false }))
-        .catch(error => this.setState({ error, isLoading: false }));
+      this.goFetch();
     }
 
     render() {
-      return <Comp { ...this.props } { ...this.state } />
+      return <Comp { ...this.props } { ...this.state } goFetch={this.goFetch}/>
     }
   }
 
-const App = ({ data, isLoading, error }) => {
-  const hits = data.hits || [];
+const App = props => {
+  const hits = props.data.hits || [];
 
-  if (error) {
-    return <p>{error.message}</p>;
-  }
+  const cardBodyContent = () => {
+    if (props.isLoading) {
+      return (
+        <h3>Loading...</h3>
+      );
+    }
+    if (props.error) {
+      return (
+        <h3>{props.error.message}</h3>
+      );
+    }
+    return (
+      hits.map((hit, index) =>
+        <div key={index}>
+          <h3>Foo: {hit.foo}</h3>
+        </div>
+      )
+    );
+  };
 
-  if (isLoading) {
-    return <p>Loading ...</p>;
-  }
+  const refreshButton = () => {
+    var isSpinning = props.isLoading ? ' fa-spin' : '';
+    return (
+      <Button onClick={props.goFetch} color="primary"><i className={"fa fa-refresh"+isSpinning}></i>{'\u00A0'} Refresh</Button>
+    );
+  };
 
   return (
     <div className="animated fadeIn">
       <CardColumns className="cols-2">
         <Card>
           <CardHeader>
-            Line Chart Hello John!
+            API Card!
             <div className="card-actions">
             </div>
           </CardHeader>
           <CardBody>
-            {hits.map(hit =>
-              <div key={hit.objectID}>
-                <a href={hit.url}>{hit.title}</a>
-                _____
-              </div>
-            )}
+            { cardBodyContent() }
+            { refreshButton() }
           </CardBody>
         </Card>
       </CardColumns>
